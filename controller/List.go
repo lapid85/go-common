@@ -8,7 +8,6 @@ import (
 	"common/response"
 
 	"github.com/gin-gonic/gin"
-	"golang.org/x/exp/slog"
 )
 
 // ActionList 数据列表
@@ -47,7 +46,7 @@ func (ths *ActionList) List(c *gin.Context) {
 		ths.ProcessRow(c, rows)
 	}
 	if err != nil {
-		slog.Error(err.Error())
+		log.Error(err.Error())
 		response.Err(c, "获取列表数据错误")
 		return
 	}
