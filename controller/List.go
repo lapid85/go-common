@@ -6,6 +6,7 @@ import (
 	"common/model"
 	"common/request"
 	"common/response"
+	"common/trans"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,7 +26,7 @@ func (ths *ActionList) List(c *gin.Context) {
 
 	db, dbErr := clients.MySQLDefault()
 	if dbErr != nil {
-		response.Err(c, "获取数据库连接错误")
+		response.Err(c, trans.Tr(c, "errGetDbConn"))
 		return
 	}
 
@@ -35,7 +36,7 @@ func (ths *ActionList) List(c *gin.Context) {
 	var total int64
 	var err error
 	whereStr := cond.Build()
-	log.Info("whereStr:", whereStr)
+	log.Info("whereStr: %s", whereStr)
 	if ths.OrderBy != nil {
 		rows, total, err = ths.Model.GetAll(db, whereStr, []int{limit, offset}, ths.OrderBy(c))
 	} else {
@@ -47,11 +48,12 @@ func (ths *ActionList) List(c *gin.Context) {
 	}
 	if err != nil {
 		log.Error(err.Error())
-		response.Err(c, "获取列表数据错误")
+		response.Err(c, trans.Tr(c, "errGetListData"))
 		return
 	}
 
 	response.Data(c, map[string]interface{}{
+		"title": trans.Tr(c, "errGetListData"),
 		"rows":  rows,
 		"total": total,
 	})
