@@ -1,10 +1,10 @@
 package controller
 
 import (
+	"common/clients"
 	"common/model"
 	"common/request"
 	"common/response"
-	"common/src/clients"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,9 +34,9 @@ func (ths *ActionList) List(c *gin.Context) {
 	var total int64
 	var err error
 	if ths.OrderBy != nil {
-		rows, total, err = ths.Model.FindAll(db, cond, limit, offset, ths.OrderBy(c))
+		rows, total, err = ths.Model.GetAll(db, cond, limit, offset, ths.OrderBy(c))
 	} else {
-		rows, total, err = ths.Model.FindAll(db, cond, limit, offset)
+		rows, total, err = ths.Model.GetAll(db, cond, limit, offset)
 	}
 
 	if ths.ProcessRow != nil {
