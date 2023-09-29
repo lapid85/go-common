@@ -1,4 +1,4 @@
-// @Author:  cobol
+// Package utils @Author:  cobol
 // @Comment: 时间相关工具 - 注意: 考虑到时区因素， 所有时间都是UTC时间
 package utils
 
@@ -46,7 +46,7 @@ func GetDateTimeByUnix(ts int64) string {
 	return GetTimeByUnix(ts).Format("2006-01-02 15:04:05")
 }
 
-// GetTimeByDateTime 通过时间获取时间
+// GetUnixByDateTime 通过时间获取时间
 func GetUnixByDateTime(dateTime string) int64 {
 	t, _ := time.ParseInLocation("2006-01-02 15:04:05", dateTime, time.UTC)
 	return t.Unix()
@@ -62,7 +62,7 @@ func GetDateTimeByUnixMicro(ts int64) string {
 	return GetTimeByUnixMicro(ts).Format("2006-01-02 15:04:05")
 }
 
-// GetTimeByDateTime 通过时间获取时间
+// GetUnixMicroByDateTime GetTimeByDateTime 通过时间获取时间
 func GetUnixMicroByDateTime(dateTime string) int64 {
 	t, _ := time.ParseInLocation("2006-01-02 15:04:05", dateTime, time.UTC)
 	return t.UnixMicro()
