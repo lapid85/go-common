@@ -1,0 +1,4 @@
+{
+    "errGetDbConn": "获取数据库连接出错",
+    "errGetListData": "获取列表数据出错"
+}

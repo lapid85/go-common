@@ -1,0 +1,4 @@
+{
+    "errGetDbConn": "獲取數據庫連接出錯",
+    "errGetListData": "獲取列表數據出錯"
+}
