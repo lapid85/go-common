@@ -1,0 +1,4 @@
+{
+    "errGetDbConn": "Error getting database connection",
+    "errGetListData": "Error getting list data"
+}
