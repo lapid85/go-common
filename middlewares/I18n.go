@@ -11,6 +11,13 @@ import (
 	"golang.org/x/text/language"
 )
 
+// LangPathDefault 默认语言文件路径
+const LangPathDefault = "./locales/common"
+// LangPathCommon 公共语言文件路径
+const LangPathCommon = "common"
+// LangDefault 默认语言
+var LangDefault = language.SimplifiedChinese
+
 // LangLoader 语言加载器
 type LangLoader struct{}
 
@@ -23,16 +30,16 @@ func (ths *LangLoader) LoadLangDir(dirPath string, langName string) (map[string]
 		return nil, nil
 	}
 	// 如果是 common 目录, 则不加载
-	if pathArr[1] == "common" {
+	if pathArr[1] == LangPathCommon {
 		return nil, nil
 	}
-
+	// 读取目录下所有文件
 	files, err := os.ReadDir(dirPath)
 	if err != nil {
 		log.Error(err.Error())
 		return nil, err
 	}
-
+	// 语言文件内容
 	result := map[string]string{}
 	for _, file := range files {
 		filePath := dirPath + "/" + file.Name()
@@ -110,7 +117,7 @@ func (ths *LangLoader) LoadMessage(path string) ([]byte, error) {
 	}
 
 	for _, dir := range dirs {
-		if dir.Name() == "common" {
+		if dir.Name() == LangPathCommon {
 			continue
 		}
 		dirPath := allLangPath + "/" + dir.Name()
@@ -147,7 +154,7 @@ func I18nWithLangHandler() gin.HandlerFunc {
 // I18n 国际化 - 参数: 语言文件路径, 语言列表, 默认语言
 func I18n(args ...interface{}) gin.HandlerFunc {
 	// 默认语言
-	langPathDefault := "./locales/common"
+	langPathDefault := LangPathDefault
 	if len(args) > 0 {
 		langPathDefault = args[0].(string)
 	}
@@ -159,7 +166,7 @@ func I18n(args ...interface{}) gin.HandlerFunc {
 	}
 
 	// 默认语言
-	langDefault := language.SimplifiedChinese
+	langDefault := LangDefault
 	if len(args) > 2 {
 		langDefault = args[2].(language.Tag)
 	}
