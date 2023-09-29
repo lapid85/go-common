@@ -80,7 +80,7 @@ func (ths *LangLoader) LoadLangDir(dirPath string, langName string) (map[string]
 	return result, nil
 }
 
-// LoadMessage 加载语言文件 - 读取目录下所有文件
+// LoadMessage 加载语言文件 - 读取目录下所有文件 - 加载默认通用语言文件时, 会加载所有语言文件
 func (ths *LangLoader) LoadMessage(path string) ([]byte, error) {
 	pathArr := strings.Split(path, "/")
 	if len(pathArr) == 0 {
