@@ -2,6 +2,7 @@ package controller
 
 import (
 	"common/clients"
+	"common/log"
 	"common/model"
 	"common/request"
 	"common/response"
@@ -35,7 +36,7 @@ func (ths *ActionList) List(c *gin.Context) {
 	var total int64
 	var err error
 	whereStr := cond.Build()
-	slog.Info("whereStr:", whereStr)
+	log.Info("whereStr:", whereStr)
 	if ths.OrderBy != nil {
 		rows, total, err = ths.Model.GetAll(db, whereStr, []int{limit, offset}, ths.OrderBy(c))
 	} else {
