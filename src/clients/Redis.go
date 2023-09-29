@@ -18,3 +18,8 @@ func Redis(connStr string) *redis.Client {
 	// })
 	// return rdb, nil
 }
+
+// RedisDefault 获取默认的 redis 连接
+func RedisDefault() *redis.Client {
+	return Redis("redis://localhost:6379/0")
+}

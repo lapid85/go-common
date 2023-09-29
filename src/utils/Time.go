@@ -41,9 +41,31 @@ func GetTimeByUnix(ts int64) time.Time {
 	return time.Unix(ts, 0).UTC()
 }
 
+// GetDateTimeByUnix 通过unix获取时间 - 秒
+func GetDateTimeByUnix(ts int64) string {
+	return GetTimeByUnix(ts).Format("2006-01-02 15:04:05")
+}
+
+// GetTimeByDateTime 通过时间获取时间
+func GetUnixByDateTime(dateTime string) int64 {
+	t, _ := time.ParseInLocation("2006-01-02 15:04:05", dateTime, time.UTC)
+	return t.Unix()
+}
+
 // GetTimeByUnixMicro 通过unix获取时间 - 微秒
 func GetTimeByUnixMicro(int64Time int64) time.Time {
 	return time.Unix(int64Time*1000000, 0).UTC()
+}
+
+// GetDateTimeByUnixMicro 通过unix获取时间 - 微秒
+func GetDateTimeByUnixMicro(ts int64) string {
+	return GetTimeByUnixMicro(ts).Format("2006-01-02 15:04:05")
+}
+
+// GetTimeByDateTime 通过时间获取时间
+func GetUnixMicroByDateTime(dateTime string) int64 {
+	t, _ := time.ParseInLocation("2006-01-02 15:04:05", dateTime, time.UTC)
+	return t.UnixMicro()
 }
 
 // SecondToMicro 秒转为微秒

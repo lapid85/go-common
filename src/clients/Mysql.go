@@ -11,3 +11,9 @@ func MySQL(connStr string) (*gorm.DB, error) {
 	conf := gorm.Config{}
 	return gorm.Open(mysql.Open(connStr), &conf)
 }
+
+// MySQLDefault 获取默认的 mysql 连接
+func MySQLDefault() (*gorm.DB, error) {
+	dsn := "admin:qwe123QWE@tcp(127.0.0.1:3306)/integrated_platforms_v5?charset=utf8mb4"
+	return MySQL(dsn)
+}

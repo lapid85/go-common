@@ -45,3 +45,8 @@ func GetOffset(c *gin.Context) (int, int) {
 	size := GetLimit(c)
 	return size, (page - 1) * size
 }
+
+// GetPlatform 获取平台信息
+func GetPlatform(c *gin.Context) string {
+	return c.DefaultQuery("platform", "default")
+}
