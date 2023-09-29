@@ -7,6 +7,7 @@ import (
 	"common/response"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/exp/slog"
 )
 
 // ActionList 数据列表
@@ -33,16 +34,19 @@ func (ths *ActionList) List(c *gin.Context) {
 	var rows interface{}
 	var total int64
 	var err error
+	whereStr := cond.Build()
+	slog.Info("whereStr:", whereStr)
 	if ths.OrderBy != nil {
-		rows, total, err = ths.Model.GetAll(db, cond, limit, offset, ths.OrderBy(c))
+		rows, total, err = ths.Model.GetAll(db, whereStr, []int{limit, offset}, ths.OrderBy(c))
 	} else {
-		rows, total, err = ths.Model.GetAll(db, cond, limit, offset)
+		rows, total, err = ths.Model.GetAll(db, whereStr, []int{limit, offset})
 	}
 
 	if ths.ProcessRow != nil {
 		ths.ProcessRow(c, rows)
 	}
 	if err != nil {
+		slog.Error(err.Error())
 		response.Err(c, "获取列表数据错误")
 		return
 	}

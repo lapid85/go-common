@@ -49,6 +49,18 @@ func (ths *Cond) Like(key string, value interface{}) {
 	ths.Ands = append(ths.Ands, fmt.Sprintf("%s LIKE '%%%s%%'", key, value))
 }
 
+// Build 构建查询条件
+func (ths *Cond) Build() string {
+	cond := ""
+	if len(ths.Ands) > 0 {
+		cond += " AND " + strings.Join(ths.Ands, " AND ")
+	}
+	if len(ths.Ors) > 0 {
+		cond += " OR " + strings.Join(ths.Ors, " OR ")
+	}
+	return cond
+}
+
 // GetQueryCond 得到查询条件
 func GetQueryCond(c *gin.Context, data map[string]interface{}) *Cond {
 	cond := &Cond{}
