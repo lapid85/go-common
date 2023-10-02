@@ -17,3 +17,8 @@ func PgSQLDefault() (*gorm.DB, error) {
 	dsn := "host=localhost user=postgres password=postgres dbname=postgres port=5432 sslmode=disable TimeZone=Asia/Shanghai"
 	return PgSQL(dsn)
 }
+
+// GetPgSQLByPlatform 依据平台获取DB
+func GetPgSQLByPlatform(platform string) (*gorm.DB, error) {
+	return PgSQLDefault()
+}

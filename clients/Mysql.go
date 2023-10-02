@@ -17,3 +17,8 @@ func MySQLDefault() (*gorm.DB, error) {
 	dsn := "admin:qwe123QWE@tcp(127.0.0.1:3306)/integrated_platforms_v5?charset=utf8mb4"
 	return MySQL(dsn)
 }
+
+// GetMySQLByPlatform 依据平台获取DB
+func GetMySQLByPlatform(platform string) (*gorm.DB, error) {
+	return MySQLDefault()
+}

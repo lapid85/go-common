@@ -23,3 +23,8 @@ func Redis(connStr string) *redis.Client {
 func RedisDefault() *redis.Client {
 	return Redis("redis://localhost:6379/0")
 }
+
+// GetRedisByPlatform 依据平台获取DB
+func GetRedisByPlatform(platform string) *redis.Client {
+	return RedisDefault()
+}
