@@ -38,12 +38,12 @@ func (ths *ActionList) List(c *gin.Context) {
 	var total int64
 	var err error
 	whereStr := cond.Build()
-	log.Info("whereStr: %s", whereStr)
-	if ths.OrderBy != nil {
-		rows, total, err = ths.Model.GetAll(db, whereStr, []int{limit, offset}, ths.OrderBy(c))
-	} else {
-		rows, total, err = ths.Model.GetAll(db, whereStr, []int{limit, offset})
-	}
+	rows, total, err = func() (interface{}, int64, error) {
+		if ths.OrderBy != nil {
+			return ths.Model.GetAll(db, whereStr, []int{limit, offset}, ths.OrderBy(c))
+		}
+		return ths.Model.GetAll(db, whereStr, []int{limit, offset})
+	}()
 	if err != nil {
 		log.Error(err.Error())
 		response.Err(c, trans.Tr(c, "errGetListData"))
@@ -58,8 +58,8 @@ func (ths *ActionList) List(c *gin.Context) {
 	// 处理发送之前数据
 	data := map[string]interface{}{
 		"title": trans.Tr(c, "errGetListData"), // 测试多语言自动翻译
-		"rows":  rows,
-		"total": total,
+		"rows":  rows,                          // 数据
+		"total": total,                         // 总数
 	}
 	if ths.AfterAction != nil {
 		ths.AfterAction(c, &data)
