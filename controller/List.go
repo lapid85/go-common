@@ -34,11 +34,8 @@ func (ths *ActionList) List(c *gin.Context) {
 	// 自定查询条件
 	cond := request.GetQueryCond(c, ths.QueryCond)
 	// 关于 order by 的判断
-	var rows interface{}
-	var total int64
-	var err error
 	whereStr := cond.Build()
-	rows, total, err = func() (interface{}, int64, error) {
+	rows, total, err := func() (interface{}, int64, error) {
 		if ths.OrderBy != nil {
 			return ths.Model.GetAll(db, whereStr, []int{limit, offset}, ths.OrderBy(c))
 		}
