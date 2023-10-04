@@ -13,8 +13,10 @@ import (
 
 // LangPathDefault 默认语言文件路径
 const LangPathDefault = "./locales/common"
+
 // LangPathCommon 公共语言文件路径
 const LangPathCommon = "common"
+
 // LangDefault 默认语言
 var LangDefault = language.SimplifiedChinese
 
@@ -23,7 +25,7 @@ type LangLoader struct{}
 
 // LoadLangDir 加载语言文件 - 读取目录下所有文件
 func (ths *LangLoader) LoadLangDir(dirPath string, langName string) (map[string]string, error) {
-	log.Info("语言文件位置: %v", dirPath)
+	log.Info("语言文件目录: %v", dirPath)
 	pathArr := strings.Split(dirPath, "/")
 	if len(pathArr) == 0 {
 		log.Error("语言文件路径错误")
@@ -109,7 +111,7 @@ func (ths *LangLoader) LoadMessage(path string) ([]byte, error) {
 	}
 	langName := langArr[0]           // 当前加载语言文件名称
 	allLangPath := "./" + pathArr[0] // 所有语言文件路径
-	log.Info("当前加载语言文件名称: %v, 所有语言文件路径: %v", langName, allLangPath)
+	log.Info("当前加载语言名称: %v, 文件目录: %v", langName, allLangPath)
 	dirs, err := os.ReadDir(allLangPath)
 	if err != nil {
 		log.Error("读取所有语言文件目录错误: %s", err.Error())
@@ -130,8 +132,6 @@ func (ths *LangLoader) LoadMessage(path string) ([]byte, error) {
 			}
 		}
 	}
-
-	log.Info("加载语言文件内容: %v", resultMap)
 
 	return json.Marshal(resultMap)
 }
