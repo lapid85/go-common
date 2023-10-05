@@ -13,11 +13,11 @@ import (
 
 // ActionList 数据列表
 type ActionList struct {
-	Model       model.IModel                    // model - 必须
-	QueryCond   map[string]interface{}          // 查询条件
-	ProcessRow  func(*gin.Context, interface{}) // 默认处理函数
-	OrderBy     func(*gin.Context) string       // 获取排序
-	AfterAction func(*gin.Context, *map[string]interface{})
+	Model      model.IModel                                // model - 必须
+	QueryCond  map[string]interface{}                      // 查询条件
+	ProcessRow func(*gin.Context, interface{})             // 默认处理函数
+	OrderBy    func(*gin.Context) string                   // 获取排序
+	ListAfter  func(*gin.Context, *map[string]interface{}) // 默认处理函数 - 用于判断或者追加数据
 }
 
 // List 记录列表 - get
@@ -58,8 +58,8 @@ func (ths *ActionList) List(c *gin.Context) {
 		"rows":  rows,                          // 数据
 		"total": total,                         // 总数
 	}
-	if ths.AfterAction != nil {
-		ths.AfterAction(c, &data)
+	if ths.ListAfter != nil {
+		ths.ListAfter(c, &data)
 	}
 
 	response.Data(c, data)
