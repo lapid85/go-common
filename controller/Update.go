@@ -5,6 +5,7 @@ import (
 	"common/model"
 	"common/request"
 	"common/response"
+	"common/trans"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,7 +19,7 @@ type ActionUpdate struct {
 func (ths *ActionUpdate) Update(c *gin.Context) {
 	id := c.GetInt("id") // 获取ID
 	if id == 0 {
-		response.Err(c, "id不能为空")
+		response.Err(c, trans.Tr(c, "errGetQueryData"))
 		return
 	}
 
@@ -35,7 +36,7 @@ func (ths *ActionUpdate) Update(c *gin.Context) {
 	platform := request.GetPlatform(c)              // 获取平台
 	db, err := clients.GetMySQLByPlatform(platform) // 获取数据库连接
 	if err != nil {
-		response.Err(c, "获取DB失败")
+		response.Err(c, trans.Tr(c, "errGetDbConn"))
 		return
 	}
 
@@ -43,7 +44,7 @@ func (ths *ActionUpdate) Update(c *gin.Context) {
 		"id": id,
 	}
 	if _, err := ths.Model.Update(db, realData, cond); err != nil {
-		response.Err(c, "更新失败")
+		response.Err(c, trans.Tr(c, "errUpdateData"))
 		return
 	}
 

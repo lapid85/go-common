@@ -1,4 +1,9 @@
 {
     "errGetDbConn": "获取数据库连接出错",
-    "errGetListData": "获取列表数据出错"
+    "errGetListData": "获取列表数据出错",
+    "errCreateData": "创建数据出错",
+    "errUpdateData": "更新数据出错",
+    "errDeleteData": "删除数据出错",
+    "errGetDetailData": "获取详情数据出错",
+    "errGetQueryData": "获取请求数据出错"
 }
