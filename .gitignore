@@ -20,6 +20,7 @@
 # Go workspace file
 go.work
 src/go.sum
+src/go.mod
 
 .idea
 go.sum
