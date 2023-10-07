@@ -65,10 +65,6 @@ func LoadConfigs(configFile string) {
 		}
 	}
 
-	consts.SiteCodes = map[string]string{}      // 编码 -> 平台识别号初始化
-	consts.SiteStaticURLs = map[string]string{} // 静态域名 -> 平台识别号
-	consts.SiteUploadURLs = map[string]string{}
-
 	// 加载总的平台信息
 	// ----------------------->> 开始 <<----------------------------------------------
 	// integratedPlatform := Get("platform.name") // 平台名称
@@ -78,15 +74,13 @@ func LoadConfigs(configFile string) {
 	dbName := Get("platform.database")     // 数据库名
 	dbPort := Get("platform.port")         // 默认端口
 	connString := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8", dbUser, dbPassword, dbHost, dbPort, dbName)
-	// dataSources := []string{connString}
 	rediString := Get("platform.redis_host") // 默认平台的redis配置信息
-	// redis.LoadConfig(integratedPlatform, cacheConnString)
-	// db.InitDbServers(integratedPlatform, "mysql", dataSources) //初始化默认的系统平台数据库
 	// ----------------------->> 结束 <<----------------------------------------------
 
 	consts.SiteMysqlStrings["system"] = connString // 系统平台的mysql连接信息
 	consts.SiteRedisStrings["system"] = rediString // 系统平台的redis连接信息
 
+	// 加载平台配置信息
 	platDB, err := clients.MySQL(connString)
 	if err != nil {
 		panic("无法连接到平台数据库: " + err.Error())
