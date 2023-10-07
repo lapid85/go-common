@@ -3,12 +3,14 @@ module common
 go 1.21
 
 require (
+	consts v0.0.0-00010101000000-000000000000
 	github.com/gin-contrib/i18n v1.0.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
 	github.com/redis/go-redis/v9 v9.2.1
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9
 	golang.org/x/text v0.11.0
+	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/mysql v1.5.1
 	gorm.io/driver/postgres v1.5.2
 	gorm.io/gorm v1.25.4
@@ -26,7 +28,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.14.1 // indirect
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
-	github.com/goccy/go-json v0.10.2 // indire
+	github.com/goccy/go-json v0.10.2 // indirect; indire
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
 	github.com/jackc/pgx/v5 v5.3.1 // indirect
@@ -50,3 +52,5 @@ require (
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+replace consts => ../../integrated-consts/src
