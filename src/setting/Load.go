@@ -59,6 +59,8 @@ func LoadPlatformConfigs(db *gorm.DB) {
 					consts.SiteUploadURLs[siteCode] = value // 上传路径
 				} else if name == "conn_strings" {
 					consts.SiteMysqlStrings[siteCode] = value // mysql 连接信息
+				} else if name == "pgsql_strings" {
+					consts.SitePgSQLStrings[siteCode] = value // pgsql 连接信息
 				} else if name == "redis_strings" {
 					consts.SiteRedisStrings[siteCode] = value // redis 连接信息
 				} else if name == "kafka_strings" {
