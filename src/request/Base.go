@@ -50,3 +50,8 @@ func GetOffset(c *gin.Context) (int, int) {
 func GetPlatform(c *gin.Context) string {
 	return c.DefaultQuery("platform", "default")
 }
+
+// GetSiteCode 获取平台信息
+func GetSiteCode(c *gin.Context) string {
+	return c.DefaultQuery("site_code", "default")
+}

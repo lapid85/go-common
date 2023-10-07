@@ -1,6 +1,13 @@
 package clients
 
-import "github.com/redis/go-redis/v9"
+import (
+	"consts/consts"
+
+	"github.com/redis/go-redis/v9"
+)
+
+// RedisClients 代码 - Redis客户端
+var redisClients = map[string]*redis.Client{}
 
 // Redis 获取 redis 连接
 func Redis(connStr string) *redis.Client {
@@ -19,12 +26,25 @@ func Redis(connStr string) *redis.Client {
 	// return rdb, nil
 }
 
-// RedisDefault 获取默认的 redis 连接
-func RedisDefault() *redis.Client {
+// RedisSystem 获取默认的 redis 连接
+func RedisSystem() *redis.Client {
 	return Redis("redis://localhost:6379/0")
 }
 
-// GetRedisByPlatform 依据平台获取DB
-func GetRedisByPlatform(platform string) *redis.Client {
-	return RedisDefault()
+// GetRedisBySite 依据平台获取DB
+func GetRedisBySite(siteCode string) *redis.Client {
+	if siteCode == "" {
+		panic("未指定平台名称")
+	}
+	if val, exists := redisClients[siteCode]; exists {
+		return val
+	}
+
+	if val, exists := consts.SiteRedisStrings[siteCode]; !exists {
+		panic("未找到平台(" + siteCode + ")的数据库连接信息")
+	} else {
+		db := Redis(val)
+		redisClients[siteCode] = db
+		return db
+	}
 }

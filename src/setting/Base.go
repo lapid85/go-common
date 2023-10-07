@@ -2,7 +2,7 @@ package setting
 
 import (
 	"common/clients"
-	"consts"
+	"consts/consts"
 	"fmt"
 	"os"
 	"strings"
@@ -65,11 +65,9 @@ func LoadConfigs(configFile string) {
 		}
 	}
 
-	// db.Servers = map[string]*xorm.EngineGroup{}     // 初始化 -> 所有数据库
-	consts.PlatformUrls = map[string]string{}       // 域名 -> 平台识别号初始化
-	consts.PlatformCodes = map[string]string{}      // 编码 -> 平台识别号初始化
-	consts.PlatformStaticURLs = map[string]string{} // 静态域名 -> 平台识别号
-	consts.PlatformUploadURLs = map[string]string{}
+	consts.SiteCodes = map[string]string{}      // 编码 -> 平台识别号初始化
+	consts.SiteStaticURLs = map[string]string{} // 静态域名 -> 平台识别号
+	consts.SiteUploadURLs = map[string]string{}
 
 	// 加载总的平台信息
 	// ----------------------->> 开始 <<----------------------------------------------
@@ -94,5 +92,4 @@ func LoadConfigs(configFile string) {
 		panic("无法连接到平台数据库: " + err.Error())
 	}
 	LoadPlatformConfigs(platDB)
-
 }

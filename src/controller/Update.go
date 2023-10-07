@@ -33,8 +33,8 @@ func (ths *ActionUpdate) Update(c *gin.Context) {
 		}
 	}
 
-	platform := request.GetPlatform(c)              // 获取平台
-	db, err := clients.GetMySQLByPlatform(platform) // 获取数据库连接
+	siteCode := request.GetSiteCode(c)          // 获取平台
+	db, err := clients.GetMySQLBySite(siteCode) // 获取数据库连接
 	if err != nil {
 		response.Err(c, trans.Tr(c, "errGetDbConn"))
 		return

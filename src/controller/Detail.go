@@ -3,6 +3,7 @@ package controller
 import (
 	"common/clients"
 	"common/model"
+	"common/request"
 	"common/response"
 	"common/trans"
 	"common/types"
@@ -22,7 +23,9 @@ func (ths *ActionDetail) Detail(c *gin.Context) {
 		response.Err(c, trans.Tr(c, "errGetQueryData"))
 		return
 	}
-	db, dbErr := clients.MySQLDefault()
+
+	siteCode := request.GetSiteCode(c)
+	db, dbErr := clients.GetMySQLBySite(siteCode)
 	if dbErr != nil {
 		response.Err(c, trans.Tr(c, "errGetDbConn"))
 		return

@@ -23,9 +23,8 @@ type ActionList struct {
 // List 记录列表 - get
 func (ths *ActionList) List(c *gin.Context) {
 	limit, offset := request.GetOffset(c)
-	platform := request.GetPlatform(c)
-
-	db, dbErr := clients.GetMySQLByPlatform(platform)
+	siteCode := request.GetSiteCode(c)
+	db, dbErr := clients.GetMySQLBySite(siteCode)
 	if dbErr != nil {
 		response.Err(c, trans.Tr(c, "errGetDbConn"))
 		return

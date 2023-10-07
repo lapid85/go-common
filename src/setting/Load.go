@@ -1,7 +1,7 @@
 package setting
 
 import (
-	"consts"
+	"consts/consts"
 	"fmt"
 
 	"gorm.io/gorm"
@@ -40,7 +40,7 @@ func LoadPlatformConfigs(db *gorm.DB) {
 				value := cv["value"]
 				cArr[name] = value
 				if name == "platform" {
-					consts.SitePlatformss[siteCode] = value // 平台识别号
+					consts.SitePlatforms[siteCode] = value // 平台识别号
 				} else if name == "static_url" {
 					consts.SiteStaticURLs[siteCode] = value // 静态文件地址
 				} else if name == "upload_url" {
