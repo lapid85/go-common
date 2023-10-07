@@ -11,10 +11,10 @@ import (
 )
 
 // LoadConfigs 加载配置信息
-func LoadConfigs(configFile string) {
-	// 默认文件名称
-	if configFile == "" {
-		configFile = "setting.ini"
+func LoadConfigs(args ...string) {
+	configFile := "setting.ini" // 默认文件名称
+	if len(args) >= 1 {
+		configFile = args[0]
 	}
 	cfg, err := ini.Load(configFile) //加载配置文件
 	if err != nil {
