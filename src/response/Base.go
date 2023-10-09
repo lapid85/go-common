@@ -52,6 +52,20 @@ func Err(c *gin.Context, args ...string) {
 	c.Abort()
 }
 
+// ErrData 输出错误信息
+func ErrData(c *gin.Context, data interface{}, args ...string) {
+	message := MessageErr
+	if len(args) > 0 {
+		message = args[0]
+	}
+	c.JSON(0, RespData{
+		Code:    CodeErr,
+		Message: message,
+		Data:    data,
+	})
+	c.Abort()
+}
+
 // Data 通过指定的错误代码，输出错误信息
 func Data(c *gin.Context, data interface{}) {
 	c.JSON(0, RespData{
