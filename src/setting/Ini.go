@@ -6,6 +6,9 @@ import (
 	"gopkg.in/ini.v1"
 )
 
+// Ini 配置信息
+var Ini *ini.File
+
 // 依据key获得ini的设置项
 func getIniKey(key string) *ini.Key {
 	sArr := strings.Split(key, ".")
@@ -17,9 +20,6 @@ func getIniKey(key string) *ini.Key {
 	}
 	return nil
 }
-
-// Ini 配置信息
-var Ini *ini.File
 
 // Get 获取配置项信息, 注意: 此方法必须在 LoadConfigs() 方法之后执行, 否则将无法获取配置信息
 // key: 配置项名称
