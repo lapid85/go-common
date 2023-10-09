@@ -1,0 +1,9 @@
+{
+    "errGetDbConn": "獲取數據庫連接出錯",
+    "errGetListData": "獲取列表數據出錯",
+    "errCreateData": "創建數據出錯",
+    "errUpdateData": "更新數據出錯",
+    "errDeleteData": "刪除數據出錯",
+    "errGetDetailData": "獲取詳情數據出錯",
+    "errGetQueryData": "獲取詳情數據出錯"
+}
