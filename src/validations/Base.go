@@ -1,156 +1,323 @@
 package validations
 
 import (
+	"errors"
+	"fmt"
 	"regexp"
+	"sports-common/log"
 	"strconv"
 	"strings"
-	"time"
 )
 
-// CheckDateFormat 校验日期格式
-func CheckDateFormat(date string) bool {
-	_, err := time.Parse("2006-01-02", date)
-	return err == nil
+// Validator 校验器
+type Validator struct {
+	Data      map[string]interface{} //要校验的字段
+	Errors    []string               //错误信息
+	FieldName string                 //当前字段
+	Required  bool                   //当前字段是否允许为空
 }
 
-// CheckRealName 校验真实姓名
-func CheckRealName(realName string) bool {
-	ok, _ := regexp.MatchString("^[\u4e00-\u9fa5]{2,10}([·•][\u4e00-\u9fa5]{2,10})?$", realName)
-	return ok
-}
-
-// CheckBankBranch 校验银行支行
-func CheckBankBranch(branch string) bool {
-	ok, _ := regexp.MatchString("^[\u4E00-\u9FA5]{4,20}$", branch)
-	return ok
-}
-
-// CheckBankAddress 校验银行支行
-func CheckBankAddress(address string) bool {
-	ok, _ := regexp.MatchString("^[\u4e00-\u9fa5_a-zA-Z0-9]{4,20}$", address)
-	return ok
-}
-
-// CheckUserName 校验用户名  4-11位字母或数字
-func CheckUserName(userName string) bool {
-	ok, _ := regexp.MatchString("^[a-zA-Z0-9]{4,12}$", userName)
-	return ok
-}
-
-// CheckPassword 校验密码 6-12位字母或数字
-// 密码md5 32位
-func CheckPassword(password string) bool {
-	ok, _ := regexp.MatchString("^[a-zA-Z0-9]{32}$", password)
-	return ok
-}
-
-// CheckVCode 校验手机邮箱验证码 只允许输入4-6位字母或数字
-func CheckVCode(code string) bool {
-	ok, _ := regexp.MatchString("^[a-zA-Z0-9]{4,6}$", code)
-	return ok
-}
-
-// CheckCVCode 图形验证码
-func CheckCVCode(code string) bool {
-	ok, _ := regexp.MatchString("^[a-zA-Z0-9]{4,6}$", code)
-	return ok
-}
-
-// CheckCVID 图形验证码ID
-func CheckCVID(id string) bool {
-	ok, _ := regexp.MatchString("^[a-zA-Z0-9]{1,100}$", id)
-	return ok
-}
-
-// FormatPhoneNumber 格式化电话号码
-func FormatPhoneNumber(number string) string {
-	runeNumber := []rune(number)
-	if len(runeNumber) != 11 {
-		return ""
+// New 生成校验器
+func New(postedData map[string]interface{}) *Validator {
+	return &Validator{
+		Data:     postedData,
+		Required: true,
 	}
-	front := string(runeNumber[:3])
-	tail := string(runeNumber[7:])
-	return front + "****" + tail
 }
 
-// FormatEmail 格式化邮件
-func FormatEmail(email string) string {
-	ss := strings.Split(email, "@")
-	if len(ss) != 2 {
-		return ""
-	}
-
-	var front string
-	if len(ss[0]) < 2 {
-		front = ss[0]
+// Null 当前字段是否允许为空值
+func (ths *Validator) Null(args ...bool) *Validator {
+	argCount := len(args)
+	if argCount >= 1 {
+		ths.Required = args[0]
 	} else {
-		front = string([]rune(ss[0])[:2])
+		ths.Required = false //默认不允许为空值
 	}
-
-	return front + "****@" + ss[1]
+	return ths
 }
 
-// CheckPhoneNumber 校验手机号
-func CheckPhoneNumber(phone string) bool {
-	pattern := "^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0-8])|(18[0-9])|166|198|(19[1-9])|(147))\\d{8}$"
-	ok, _ := regexp.MatchString(pattern, phone)
-	return ok
+// Field 设置当前的字段名称
+func (ths *Validator) Field(name string) *Validator {
+	ths.FieldName = name
+	return ths
 }
 
-// CheckEmail 校验邮箱
-func CheckEmail(email string) bool {
-	pattern := `\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*`
-	ok, _ := regexp.MatchString(pattern, email)
-	return ok
+// AppendError 追加错误信息
+func (ths *Validator) AppendError(message string) *Validator {
+	ths.Errors = append(ths.Errors, message)
+	return ths
 }
 
-// CheckBankCard 校验卡号
-func CheckBankCard(bankCard string) bool {
-	pattern := `^[0-9]{16,20}$`
-	ok, _ := regexp.MatchString(pattern, bankCard)
-	return ok
-}
-
-// // CheckBankCode 检查银行编码
-// func CheckBankCode(bankCode string) bool {
-// 	for _, v := range consts.BankList {
-// 		if v.BankCode == bankCode {
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }
-
-// CheckDeviceID 设备ID
-func CheckDeviceID(deviceID string) bool {
-	ok, _ := regexp.MatchString("^[a-zA-Z0-9:\\-]{1,100}$", deviceID)
-	return ok
-}
-
-// CheckHttpUrl 检查url
-func CheckHttpUrl(url string) bool {
-	ok, _ := regexp.MatchString(`(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]`, url)
-	return ok
-}
-
-// CheckIP 检查ip
-func CheckIP(ip string) bool {
-	reg := `^(([1-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.)(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){2}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$`
-	ok, _ := regexp.MatchString(reg, ip)
-	return ok
-}
-
-// CheckVType 检查vtype
-func CheckVType(vType string) bool {
-	vt, _ := strconv.Atoi(vType)
-	if vt < 1 || vt > 20 {
-		return false
+// Check 检测各个字段
+func (ths *Validator) Check(message string, callback func(interface{}) error) *Validator {
+	val, exists := ths.Data[ths.FieldName]
+	if !exists {
+		if !ths.Required {
+			return ths
+		}
+		return ths.AppendError(message)
 	}
-	return true
+	if err := callback(val); err != nil {
+		log.Err("\n格式化时出错: %v\n字段: %v\n提交数据: %v\n\n", err, ths.FieldName, ths.Data)
+		ths.AppendError(message)
+	}
+	return ths
 }
 
-// CheckDirFormat 检查dir格式
-func CheckDirFormat(dir string) bool {
-	ok, _ := regexp.MatchString("^[a-zA-Z0-9/.]{1,100}$", dir)
-	return ok
+// CheckReg 检测正则表达式
+func (ths *Validator) CheckReg(regex string, message string) *Validator {
+	val, exists := ths.Data[ths.FieldName]
+	if !exists {
+		if !ths.Required {
+			return ths
+		}
+		return ths.AppendError(message)
+	}
+	matched, err := regexp.MatchString(regex, val.(string))
+	if err != nil {
+		ths.AppendError(err.Error())
+		return ths
+	}
+	if !matched {
+		ths.AppendError(message)
+	}
+	return ths
+}
+
+// Length 字段长度必须介于二者之间
+func (ths *Validator) Length(min int, max int, message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		length := len([]rune(val.(string)))
+		if !ths.Required && length == 0 { //如果不是必须,并且长度为0
+			return nil
+		}
+		if length < min || length > max {
+			return errors.New("字符串长度不在区间范围之内")
+		}
+		return nil
+	})
+}
+
+// Numeric 是数字, 可以为整数, 负数, 小数
+func (ths *Validator) Numeric(message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		_, err := strconv.ParseFloat(fmt.Sprintf("%v", val), 10)
+		return err
+	})
+}
+
+// Numeric 是数字, 可以为整数,小数,大于0
+func (ths *Validator) NumericGt0(message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		if num, err := strconv.ParseFloat(fmt.Sprintf("%v", val), 10); err == nil && num > 0 {
+			return nil
+		}
+		return errors.New("不是大于0的数")
+	})
+}
+
+// Numeric 是数字, 可以为整数,小数,大于等于0
+func (ths *Validator) NumericEq0(message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		if num, err := strconv.ParseFloat(fmt.Sprintf("%v", val), 10); err == nil && num >= 0 {
+			return nil
+		}
+		return errors.New("不是大于0的数")
+	})
+}
+
+// DateTime 必须是日期时间格式
+func (ths *Validator) DateTime(message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		matched, err := regexp.MatchString(`\d{4}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2}`, val.(string))
+		if !matched {
+			return errors.New("日期时间格式错误")
+		}
+		return err
+	})
+}
+
+// Date 必须是日期格式
+func (ths *Validator) Date(message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		matched, err := regexp.MatchString(`\d{4}\-\d{2}\-\d{2}`, val.(string))
+		if !matched {
+			return errors.New("日期时间格式错误")
+		}
+		return err
+	})
+}
+
+// Time 必须是时间格式
+func (ths *Validator) Time(message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		matched, err := regexp.MatchString(`\d{2}:\d{2}:\d{2}`, val.(string))
+		if !matched {
+			return errors.New("日期时间格式错误")
+		}
+		return err
+	})
+}
+
+// Int 是整数
+func (ths *Validator) Int(message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		_, err := strconv.Atoi(fmt.Sprintf("%v", val))
+		return err
+	})
+}
+
+// Uint0 是正整数-包括零
+func (ths *Validator) Uint0(message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		_, err := strconv.ParseUint(fmt.Sprintf("%v", val), 10, 64)
+		return err
+	})
+}
+
+// Uint 正整数非零
+func (ths *Validator) Uint(message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		if num, err := strconv.ParseUint(fmt.Sprintf("%v", val), 10, 64); err == nil && num > 0 {
+			return nil
+		}
+		return errors.New("不是非零的正整数")
+	})
+}
+
+// Mobile 是手机号码
+func (ths *Validator) Mobile(args ...string) *Validator {
+	message := "手机号码格式不正确"
+	if len(args) >= 1 {
+		message = args[0]
+	}
+	return ths.CheckReg(`1[356789]{1}\d{9}`, message)
+}
+
+// Mail 判断是否是电子邮件
+func (ths *Validator) Mail(args ...string) *Validator {
+	message := "电子邮件格式不正确"
+	if len(args) >= 1 {
+		message = args[0]
+	}
+	return ths.CheckReg(`[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+`, message)
+}
+
+// Password 必须是密码
+func (ths *Validator) Password(args ...string) *Validator {
+	message := "密码格式不正确"
+	if len(args) >= 1 {
+		message = args[0]
+	}
+	return ths.Check(message, func(val interface{}) error {
+		strLen := len(val.(string))
+		if strLen > 20 || strLen < 6 {
+			return errors.New("密码需要6-20位")
+		}
+		return nil
+	})
+}
+
+// Equal 两个字段必须相等
+func (ths *Validator) Equal(field string, args ...string) *Validator {
+	message := "确认内容与校验内容不一致"
+	if len(args) >= 1 {
+		message = args[0]
+	}
+	return ths.Check(message, func(val interface{}) error {
+		v := val.(string)
+		vField, exists := ths.Data[field]
+		if !exists {
+			return errors.New("两次输入的值不一致")
+		}
+		if v != vField {
+			return errors.New("两次内容不一致")
+		}
+		return nil
+	})
+}
+
+// Gender 性别
+func (ths *Validator) Gender(args ...string) *Validator {
+	message := "性别选择不正确"
+	if len(args) >= 1 {
+		message = args[0]
+	}
+	return ths.Check(message, func(val interface{}) error {
+		v, err := strconv.Atoi(fmt.Sprintf("%v", val))
+		if err != nil {
+			return err
+		}
+		if v < 0 || v > 2 {
+			return errors.New("性别不在合法区间之内")
+		}
+		return nil
+	})
+}
+
+// State 必须是状态值
+func (ths *Validator) State(args ...string) *Validator {
+	message := "状态值无效"
+	if len(args) >= 1 {
+		message = args[0]
+	}
+	return ths.Check(message, func(val interface{}) error {
+		sta := fmt.Sprintf("%v", val)
+		if sta == "1" || sta == "0" {
+			return nil
+		}
+		return errors.New("状态值无效")
+	})
+}
+
+// InValues 值在区间范围之内
+func (ths *Validator) InValues(values []string, message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		value := val.(string)
+		for _, v := range values {
+			if value == v {
+				return nil
+			}
+		}
+		return errors.New("值不在区间范围之内")
+	})
+}
+
+// InIntValues 值在区间范围之内(整形)
+func (ths *Validator) InIntValues(values []int, message string) *Validator {
+	return ths.Check(message, func(val interface{}) error {
+		value := val.(int)
+		for _, v := range values {
+			if value == v {
+				return nil
+			}
+		}
+		return errors.New("值不在区间范围之内")
+	})
+}
+
+// BankCard 银行卡号
+func (ths *Validator) BankCard(args ...string) *Validator {
+	message := "银行卡号格式不正确"
+	if len(args) >= 1 {
+		message = args[0]
+	}
+	return ths.CheckReg(`([1-9]{1})(\d{14}|\d{18})`, message)
+}
+
+// UserName 用户名称
+func (ths *Validator) UserName(args ...string) *Validator {
+	message := "用户名称格式不正确"
+	if len(args) >= 1 {
+		message = args[0]
+	}
+	return ths.CheckReg(`[A-Za-z]{1}[A-Za-z0-9]{4,17}`, message)
+}
+
+// Validate 生成校验结果
+func (ths *Validator) Validate() error {
+	if len(ths.Errors) == 0 {
+		return nil
+	}
+	return errors.New(strings.Join(ths.Errors, ","))
 }
