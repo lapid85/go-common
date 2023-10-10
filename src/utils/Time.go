@@ -36,6 +36,16 @@ func NowMicro() int64 {
 	return Time().UnixMicro()
 }
 
+// NowMills 得到毫秒
+func NowMills() int64 {
+	return NowMicro() / 1e3
+}
+
+// NowSecs 得到秒
+func NowSecs() int64 {
+	return NowMicro() / 1e6
+}
+
 // GetTimeByUnix 通过unix获取时间 - 秒
 func GetTimeByUnix(ts int64) time.Time {
 	return time.Unix(ts, 0).UTC()
@@ -106,10 +116,20 @@ func GetDayStart() time.Time {
 	return time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
 }
 
+// GetTodayStart 今日开始时间
+func GetTodayStart() time.Time {
+	return GetDayStart()
+}
+
 // GetDayEnd 本日结束时间
 func GetDayEnd() time.Time {
 	now := Time()
 	return time.Date(now.Year(), now.Month(), now.Day(), 23, 59, 59, 0, time.UTC)
+}
+
+// GetTodayEnd 今日结束时间
+func GetTodayEnd() time.Time {
+	return GetDayEnd()
 }
 
 // GetYesterdayStart 昨日开始时间
