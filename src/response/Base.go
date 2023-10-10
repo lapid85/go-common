@@ -39,12 +39,25 @@ func Ok(c *gin.Context, args ...string) {
 	})
 }
 
-// Err 输出错误信息
-func Err(c *gin.Context, args ...string) {
+// Err 输出错误信息 message, data
+func Err(c *gin.Context, args ...interface{}) {
 	message := MessageErr
 	if len(args) > 0 {
-		message = args[0]
+		message = args[0].(string)
 	}
+
+	// 如果有数据, 则返回数据
+	if len(args) > 1 {
+		c.JSON(0, RespData{
+			Code:    CodeErr,
+			Message: message,
+			Data:    args[1],
+		})
+		c.Abort()
+		return
+	}
+
+	// 没有数据, 则返回错误信息
 	c.JSON(0, RespOK{
 		Code:    CodeErr,
 		Message: message,
@@ -67,10 +80,14 @@ func ErrData(c *gin.Context, data interface{}, args ...string) {
 }
 
 // Data 通过指定的错误代码，输出错误信息
-func Data(c *gin.Context, data interface{}) {
+func Data(c *gin.Context, data interface{}, args ...string) {
+	message := MessageSuccess
+	if len(args) > 0 {
+		message = args[0]
+	}
 	c.JSON(0, RespData{
 		Code:    CodeSuccess,
-		Message: MessageSuccess,
+		Message: message,
 		Data:    data,
 	})
 }

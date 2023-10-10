@@ -11,7 +11,7 @@ import (
 // BaseTimeMicro 默认微秒累加  - 2099-01-01 00:00:00
 const BaseTimeMicro = 4070880000
 
-// NowTime 标准获取当前时间 - 考虑时区因素
+// Time 标准获取当前时间 - 考虑时区因素
 func Time() time.Time {
 	return time.Now().UTC()
 }
