@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
-	"sports-common/log"
 	"strconv"
 	"strings"
 )
@@ -58,7 +57,6 @@ func (ths *Validator) Check(message string, callback func(interface{}) error) *V
 		return ths.AppendError(message)
 	}
 	if err := callback(val); err != nil {
-		log.Err("\n格式化时出错: %v\n字段: %v\n提交数据: %v\n\n", err, ths.FieldName, ths.Data)
 		ths.AppendError(message)
 	}
 	return ths
