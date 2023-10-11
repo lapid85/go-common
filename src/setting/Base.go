@@ -81,15 +81,16 @@ func LoadConfigs(args ...string) {
 	dbName := Get("platform.database")     // 数据库名
 	dbPort := Get("platform.port")         // 默认端口
 	connString := fmt.Sprintf("%v:%v@tcp(%v:%v)/%v?charset=utf8", dbUser, dbPassword, dbHost, dbPort, dbName)
-	rediString := Get("platform.redis_host") // 默认平台的redis配置信息
+	_, _ = pp.Println(connString)
+	redisString := Get("platform.redis_host") // 默认平台的redis配置信息
+	_, _ = pp.Println(redisString)
 	// ----------------------->> 结束 <<----------------------------------------------
 
-	consts.SiteMysqlStrings["system"] = connString // 系统平台的mysql连接信息
-	consts.SiteRedisStrings["system"] = rediString // 系统平台的redis连接信息
+	consts.SiteMysqlStrings["system"] = connString  // 系统平台的mysql连接信息
+	consts.SiteRedisStrings["system"] = redisString // 系统平台的redis连接信息
 
 	// 加载平台配置信息
 	platDB, err := clients.MySQL(connString)
-	fmt.Println(connString)
 	if err != nil {
 		panic("无法连接到平台数据库: " + err.Error())
 	}
