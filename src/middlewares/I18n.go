@@ -159,7 +159,12 @@ func I18n(args ...interface{}) gin.HandlerFunc {
 	}
 
 	// 语言列表
-	languages := []language.Tag{language.English, language.SimplifiedChinese, language.TraditionalChinese, language.BrazilianPortuguese}
+	languages := []language.Tag{
+		language.English,             // Accept-Language: en
+		language.SimplifiedChinese,   // Accept-Language: zh-cn
+		language.TraditionalChinese,  // Accept-Language: zh-tw
+		language.BrazilianPortuguese, // Accept-Language: pt-BR
+	}
 	if len(args) > 1 {
 		languages = args[1].([]language.Tag)
 	}
