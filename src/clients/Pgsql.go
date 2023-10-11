@@ -24,12 +24,12 @@ func PgSQLSystem() (*gorm.DB, error) {
 }
 
 // GetPgSQLBySite 依据平台获取DB
-func GetPgSQLBySite(siteCode string) (*gorm.DB, error) {
+func GetPgSQLBySite(siteCode string) *gorm.DB {
 	if siteCode == "" {
 		panic("未指定平台名称")
 	}
 	if val, exists := PgSQLServers[siteCode]; exists {
-		return val, nil
+		return val
 	}
 
 	if val, exists := consts.SitePgSQLStrings[siteCode]; !exists {
@@ -37,9 +37,9 @@ func GetPgSQLBySite(siteCode string) (*gorm.DB, error) {
 	} else {
 		db, err := PgSQL(val)
 		if err != nil {
-			return nil, err
+			return nil
 		}
 		PgSQLServers[siteCode] = db
-		return db, nil
+		return db
 	}
 }
