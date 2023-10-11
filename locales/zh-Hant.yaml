@@ -73,7 +73,7 @@ errNoticeType: 公告類型錯誤
 errNoticeId: 公告ID錯誤
 errUploadType: 上傳類型錯誤
 errDeviceIDAndIP: 設備ID和IP不能同時為空
-errPwdFail: 您輸入密碼錯誤20次，請於%d分%d秒後再嘗試登錄
+errPwdFail: 您輸入密碼錯誤20次,請於%d分%d秒後再嘗試登錄
 errUsernameIncorrect: 請輸入正確的用戶名稱
 errUserNotFound: 用戶信息不存在
 errUserOrPwdInvalid: 用戶名稱/密碼錯誤或無效
@@ -81,15 +81,15 @@ errDelUserCache: 刪除用戶緩存失敗
 errUserStatusException: 帳號異常，請聯繫客服
 errUsername: 請輸入正確的用戶名稱
 errUsernameOrPass: 用戶名或密碼錯誤
-errManyTimesLock: 用戶名或密碼錯誤，第%d次嘗試，20次輸入錯誤帳號將鎖定
-errManyTimesTry: 您輸入密碼錯誤20次，請於%d分%d秒後再嘗試登錄
+errManyTimesLock: 用戶名或密碼錯誤，第%d次嘗試,20次輸入錯誤帳號將鎖定
+errManyTimesTry: 您輸入密碼錯誤20次,請於%d分%d秒後再嘗試登錄
 errLaterTry: 稍後重試
 failSetUserByToken: 設置用戶信息失敗
 failSetSingleLogin: 設置單點登錄失敗
 successLogin: 登錄成功
 failCheckVersion: 檢查版本失敗
 failCheckIP: 檢查IP失敗
-errIPIsDeny: IP存在風險，無法使用本平臺
+errIPIsDeny: IP存在風險,無法使用本平臺
 errDeviceIsDeny: 設備存在風險，無法使用本平臺
 failCheckDevice: 檢查設備失敗
 errUpAgentNotFound: 上級代理不存在
