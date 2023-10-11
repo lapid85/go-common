@@ -117,7 +117,10 @@ successRegister: Registro bem-sucedido
 errLoginParameter: Parâmetros de login incorretos
 errRegisterParameter: Parâmetros de registro incorretos
 errGetUser: Falha ao obter informações do usuário
+errGetAgent: Falha ao obter informações do agente
 errUserExists: Usuário já existe
 failUserCreate: Falha ao criar o usuário
 errPasswordIncorrect: Nome de usuário ou senha incorretos
 successOperate: Operação bem-sucedida
+errUserUpdate: Falha ao atualizar informações do usuário
+errGetUserAccount: Falha ao obter informações da conta do usuário

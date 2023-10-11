@@ -59,3 +59,8 @@ func GetSiteCode(c *gin.Context) string {
 
 	return ""
 }
+
+// GetIP 获取IP
+func GetIP(c *gin.Context) string {
+	return c.ClientIP()
+}

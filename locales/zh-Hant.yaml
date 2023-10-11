@@ -117,7 +117,10 @@ successRegister: 註冊成功
 errLoginParameter: 登錄參數錯誤
 errRegisterParameter: 註冊參數錯誤
 errGetUser: 獲取用戶信息失敗
+errGetAgent: 獲取代理信息失敗
 errUserExists: 用戶已存在
 failUserCreate: 創建用戶失敗
 errPasswordIncorrect: 用戶名稱或者密碼錯誤
 successOperate: 操作成功
+errUserUpdate: 更新用戶信息失敗
+errGetUserAccount: 獲取用戶賬戶信息失敗

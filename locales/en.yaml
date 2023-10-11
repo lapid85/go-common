@@ -117,7 +117,10 @@ successRegister: Registration successful
 errLoginParameter: Incorrect login parameters
 errRegisterParameter: Incorrect registration parameters
 errGetUser: Failed to get user information
+errGetAgent: Failed to get agent information
 errUserExists: User already exists
 failUserCreate: Failed to create user
 errPasswordIncorrect: Incorrect username or password
 successOperate: Operation successful
+errUserUpdate: Failed to update user information
+errGetUserAccount: Failed to get user account information
