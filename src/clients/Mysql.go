@@ -36,7 +36,11 @@ func GetMySQLBySite(siteCode string) *gorm.DB {
 	} else {
 		db, err := MySQL(val)
 		if err != nil {
+			panic("连接服务器出错:" + err.Error() + ", " + val)
 			return nil
+		}
+		if db == nil {
+			panic("无法连接到数据库:" + val)
 		}
 		MySQLServers[siteCode] = db
 		return db

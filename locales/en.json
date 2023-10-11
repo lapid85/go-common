@@ -3,7 +3,7 @@
     "errGetListData": "Error getting list data",
     "errCreateData": "Error creating record",
     "errUpdateData": "Error updating record",
-    "errDeeteData": "Error deleting record",
+    "errDeleteData": "Error deleting record",
     "errGetDetailData": "Error getting record data",
     "errGetQueryData": "Error getting query data"
 }

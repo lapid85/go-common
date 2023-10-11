@@ -1,0 +1,9 @@
+{
+  "errGetDbConn": "Erro ao obter conexão com o banco de dados",
+  "errGetListData": "Erro ao obter dados da lista",
+  "errCreateData": "Erro ao criar dados",
+  "errUpdateData": "Erro ao atualizar dados",
+  "errDeleteData": "Erro ao excluir dados",
+  "errGetDetailData": "Erro ao obter dados detalhados",
+  "errGetQueryData": "Erro ao obter dados da consulta"
+}

@@ -53,5 +53,9 @@ func GetPlatform(c *gin.Context) string {
 
 // GetSiteCode 获取平台信息
 func GetSiteCode(c *gin.Context) string {
-	return c.DefaultQuery("site_code", "default")
+	if siteCode := c.GetHeader("site"); siteCode != "" {
+		return strings.ToUpper(siteCode)
+	}
+
+	return ""
 }

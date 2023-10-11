@@ -12,7 +12,7 @@ import (
 )
 
 // LangPathDefault 默认语言文件路径
-const LangPathDefault = "./locales/common"
+const LangPathDefault = "./locales"
 
 // LangPathCommon 公共语言文件路径
 const LangPathCommon = "common"
@@ -25,14 +25,9 @@ type LangLoader struct{}
 
 // LoadLangDir 加载语言文件 - 读取目录下所有文件
 func (ths *LangLoader) LoadLangDir(dirPath string, langName string) (map[string]string, error) {
-	log.Info("语言文件目录: %v", dirPath)
 	pathArr := strings.Split(dirPath, "/")
 	if len(pathArr) == 0 {
 		log.Error("语言文件路径错误")
-		return nil, nil
-	}
-	// 如果是 common 目录, 则不加载
-	if pathArr[1] == LangPathCommon {
 		return nil, nil
 	}
 	// 读取目录下所有文件
@@ -111,7 +106,6 @@ func (ths *LangLoader) LoadMessage(path string) ([]byte, error) {
 	}
 	langName := langArr[0]           // 当前加载语言文件名称
 	allLangPath := "./" + pathArr[0] // 所有语言文件路径
-	log.Info("当前加载语言名称: %v, 文件目录: %v", langName, allLangPath)
 	dirs, err := os.ReadDir(allLangPath)
 	if err != nil {
 		log.Error("读取所有语言文件目录错误: %s", err.Error())
@@ -119,20 +113,25 @@ func (ths *LangLoader) LoadMessage(path string) ([]byte, error) {
 	}
 
 	for _, dir := range dirs {
-		if dir.Name() == LangPathCommon {
+		dirPath := allLangPath + "/" + dir.Name()
+		if stat, err := os.Stat(dirPath); err != nil {
+			panic(err)
+		} else if !stat.IsDir() {
 			continue
 		}
-		dirPath := allLangPath + "/" + dir.Name()
 		if jsonMap, err := ths.LoadLangDir(dirPath, langName); err != nil {
 			log.Error("加载所有目录内语言文件出错: %s", err.Error())
 			return nil, err
 		} else {
 			for k, v := range jsonMap {
-				resultMap[k] = v
+				if _, ok := resultMap[k]; !ok {
+					resultMap[k] = v
+				}
 			}
 		}
 	}
 
+	// _, _ = pp.Println(resultMap)
 	return json.Marshal(resultMap)
 }
 
@@ -160,9 +159,9 @@ func I18n(args ...interface{}) gin.HandlerFunc {
 	}
 
 	// 语言列表
-	langs := []language.Tag{language.English, language.SimplifiedChinese}
+	languages := []language.Tag{language.English, language.SimplifiedChinese, language.TraditionalChinese, language.BrazilianPortuguese}
 	if len(args) > 1 {
-		langs = args[1].([]language.Tag)
+		languages = args[1].([]language.Tag)
 	}
 
 	// 默认语言
@@ -173,7 +172,7 @@ func I18n(args ...interface{}) gin.HandlerFunc {
 
 	return ginI18n.Localize(ginI18n.WithBundle(&ginI18n.BundleCfg{
 		RootPath:         langPathDefault,
-		AcceptLanguage:   langs,
+		AcceptLanguage:   languages,
 		DefaultLanguage:  langDefault,
 		UnmarshalFunc:    json.Unmarshal,
 		FormatBundleFile: "json",
