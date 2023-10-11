@@ -4,6 +4,7 @@ import (
 	"common/clients"
 	"consts/consts"
 	"fmt"
+	"github.com/k0kubun/pp/v3"
 	"os"
 	"strings"
 
@@ -87,16 +88,43 @@ func LoadConfigs(args ...string) {
 	}
 
 	// 初始化
-	consts.SitePlatforms = map[string]string{}         // 平台识别号
-	consts.SiteNames = map[string]string{}             // 站点名称
-	consts.SiteCodes = map[string]string{}             // 站点代码
-	consts.SiteConfgs = map[string]map[string]string{} // 站点配置信息
-	consts.SiteStaticURLs = map[string]string{}        // 静态文件地址
-	consts.SiteUploadURLs = map[string]string{}        // 上传路径
-	consts.SiteMysqlStrings = map[string]string{}      // mysql 连接信息
-	consts.SitePgSQLStrings = map[string]string{}      // pgsql 连接信息
-	consts.SiteRedisStrings = map[string]string{}      // redis 连接信息
-	consts.SiteKafkaStrings = map[string]string{}      // kafka 连接信息
+	consts.SitePlatforms = map[string]string{}          // 平台识别号
+	consts.SiteNames = map[string]string{}              // 站点名称
+	consts.SiteCodes = map[string]string{}              // 站点代码
+	consts.SiteConfigs = map[string]map[string]string{} // 站点配置信息
+	consts.SiteStaticURLs = map[string]string{}         // 静态文件地址
+	consts.SiteUploadURLs = map[string]string{}         // 上传路径
+	consts.SiteMysqlStrings = map[string]string{}       // mysql 连接信息
+	consts.SitePgSQLStrings = map[string]string{}       // pgsql 连接信息
+	consts.SiteRedisStrings = map[string]string{}       // redis 连接信息
+	consts.SiteKafkaStrings = map[string]string{}       // kafka 连接信息
 
 	LoadPlatformConfigs(platDB)
+
+	loadedData := map[string]interface{}{
+		"UploadPath":            consts.UploadPath,
+		"UploadURL":             consts.UploadURLPath,
+		"LogPath":               consts.LogPath,
+		"IpDbPath":              consts.IpDbPath,
+		"InternalMemberServUrl": consts.InternalMemberServUrl,
+		"InternalGameServUrl":   consts.InternalGameServUrl,
+		"InternalOssServUrl":    consts.InternalOssServUrl,
+		"InternalAdminServUrl":  consts.InternalAdminServUrl,
+		"AppName":               consts.AppName,
+		"PlatformIntegrated":    consts.PlatformIntegrated,
+		"SiteDefault":           consts.SiteDefault,
+		"InternalIpList":        consts.InternalIpList,
+		"SitePlatforms":         consts.SitePlatforms,
+		"SiteNames":             consts.SiteNames,
+		"SiteCodes":             consts.SiteCodes,
+		"SiteConfigs":           consts.SiteConfigs,
+		"SiteStaticURLs":        consts.SiteStaticURLs,
+		"SiteUploadURLs":        consts.SiteUploadURLs,
+		"SiteMysqlStrings":      consts.SiteMysqlStrings,
+		"SitePgSQLStrings":      consts.SitePgSQLStrings,
+		"SiteRedisStrings":      consts.SiteRedisStrings,
+		"SiteKafkaStrings":      consts.SiteKafkaStrings,
+	}
+
+	_, _ = pp.Println(loadedData)
 }
