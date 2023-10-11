@@ -3,6 +3,7 @@ package middlewares
 import (
 	"common/log"
 	"encoding/json"
+	"gopkg.in/yaml.v3"
 	"os"
 	"strings"
 
@@ -161,8 +162,8 @@ func I18n(args ...interface{}) gin.HandlerFunc {
 	// 语言列表
 	languages := []language.Tag{
 		language.English,             // Accept-Language: en
-		language.SimplifiedChinese,   // Accept-Language: zh-cn
-		language.TraditionalChinese,  // Accept-Language: zh-tw
+		language.SimplifiedChinese,   // Accept-Language: zh-Hans
+		language.TraditionalChinese,  // Accept-Language: zh-Hant
 		language.BrazilianPortuguese, // Accept-Language: pt-BR
 	}
 	if len(args) > 1 {
@@ -179,8 +180,9 @@ func I18n(args ...interface{}) gin.HandlerFunc {
 		RootPath:         langPathDefault,
 		AcceptLanguage:   languages,
 		DefaultLanguage:  langDefault,
-		UnmarshalFunc:    json.Unmarshal,
-		FormatBundleFile: "json",
-		Loader:           &LangLoader{},
+		UnmarshalFunc:    yaml.Unmarshal,
+		FormatBundleFile: "yaml",
+		// UnmarshalFunc:    json.Unmarshal,
+		// Loader:           &LangLoader{},
 	}))
 }
