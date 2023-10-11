@@ -23,12 +23,12 @@ func MySQLSystem() (*gorm.DB, error) {
 }
 
 // GetMySQLBySite 依据平台获取DB
-func GetMySQLBySite(siteCode string) (*gorm.DB, error) {
+func GetMySQLBySite(siteCode string) *gorm.DB {
 	if siteCode == "" {
 		panic("未指定平台名称")
 	}
 	if val, exists := MySQLServers[siteCode]; exists {
-		return val, nil
+		return val
 	}
 
 	if val, exists := consts.SiteMysqlStrings[siteCode]; !exists {
@@ -36,9 +36,9 @@ func GetMySQLBySite(siteCode string) (*gorm.DB, error) {
 	} else {
 		db, err := MySQL(val)
 		if err != nil {
-			return nil, err
+			return nil
 		}
 		MySQLServers[siteCode] = db
-		return db, nil
+		return db
 	}
 }

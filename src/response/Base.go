@@ -28,14 +28,35 @@ type RespData struct {
 }
 
 // Ok 输出成功消息
-func Ok(c *gin.Context, args ...string) {
+func Ok(c *gin.Context, args ...interface{}) {
 	message := MessageSuccess
 	if len(args) > 0 {
-		message = args[0]
+		message = args[0].(string)
+	}
+	if len(args) > 1 {
+		c.JSON(0, RespData{
+			Code:    CodeSuccess,
+			Message: message,
+			Data:    args[1],
+		})
+		return
 	}
 	c.JSON(0, RespOK{
 		Code:    CodeSuccess,
 		Message: message,
+	})
+}
+
+// Data 通过指定的错误代码，输出错误信息
+func Data(c *gin.Context, data interface{}, args ...string) {
+	message := MessageSuccess
+	if len(args) > 0 {
+		message = args[0]
+	}
+	c.JSON(0, RespData{
+		Code:    CodeSuccess,
+		Message: message,
+		Data:    data,
 	})
 }
 
@@ -77,17 +98,4 @@ func ErrData(c *gin.Context, data interface{}, args ...string) {
 		Data:    data,
 	})
 	c.Abort()
-}
-
-// Data 通过指定的错误代码，输出错误信息
-func Data(c *gin.Context, data interface{}, args ...string) {
-	message := MessageSuccess
-	if len(args) > 0 {
-		message = args[0]
-	}
-	c.JSON(0, RespData{
-		Code:    CodeSuccess,
-		Message: message,
-		Data:    data,
-	})
 }
