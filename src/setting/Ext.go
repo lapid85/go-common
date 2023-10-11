@@ -1,6 +1,7 @@
 package setting
 
 import (
+	"consts/consts"
 	"fmt"
 	"os"
 	"strings"
@@ -24,6 +25,17 @@ func LoadExtConfigs(args ...string) {
 
 	}
 	Ext = cfg //设置全局Ini信息
+
+	appName := GetExt("app_name")
+	if appName != "" {
+		consts.AppName = appName //应用程序名称
+	}
+
+	runMode := GetExt("sys.run_mode")
+	if runMode != "" {
+		consts.RunMode = runMode //运行模式
+	}
+
 }
 
 // 依据key获得ini的设置项

@@ -3,6 +3,7 @@ package setting
 import (
 	"consts/consts"
 	"fmt"
+	"strings"
 
 	"gorm.io/gorm"
 )
@@ -11,7 +12,7 @@ import (
 func LoadPlatformConfigs(db *gorm.DB) {
 
 	// 平台信息
-	var platforms []map[string]string
+	var platforms []map[string]interface{}
 	db.Table("platforms").Where("status = ?", 2).Find(&platforms)
 	if len(platforms) == 0 {
 		panic("无法获取平台列表信息")
@@ -19,25 +20,29 @@ func LoadPlatformConfigs(db *gorm.DB) {
 
 	// 站点信息
 	for _, pv := range platforms {
-		var sites []map[string]string
-		db.Table("sites").Where("platform_id = ? AND status = ?", pv["id"], 2).Find(&sites)
-		if len(sites) == 0 {
+		var sites []map[string]interface{}
+		if result := db.Table("sites").Where("platform_id = ? AND status = ?", pv["id"], 2).Find(&sites); result.Error != nil {
+			panic(fmt.Sprintf("无法获取平台(id: %v)下属站点信息: %v", pv["id"], result.Error))
+		} else if len(sites) == 0 {
 			panic(fmt.Sprintf("无法获取平台(id: %v)下属站点信息", pv["id"]))
 		}
 
 		for _, sv := range sites {
-			var configs []map[string]string
-			db.Table("site_configs").Where("platform_id = ? AND site_id = ? AND status = ?", pv["id"], sv["id"], 2).Find(&configs)
-			if len(configs) == 0 {
+			var configs []map[string]interface{}
+			if result := db.Table("site_configs").Where("platform_id = ? AND site_id = ? AND status = ?", pv["id"], sv["id"], 2).Find(&configs); result.Error != nil {
+				panic(fmt.Sprintf("无法获取平台(id: %v)/站点(id: %v)配置信息: %v", pv["id"], sv["id"], result.Error))
+			} else if len(configs) == 0 {
 				panic(fmt.Sprintf("无法获取平台(id: %v)/站点(id: %v)配置信息", pv["id"], sv["id"]))
 			}
 
-			siteCode := sv["code"] // 站点代码
+			siteCode := strings.ToUpper(sv["code"].(string)) // 站点代码
 			cArr := map[string]string{}
 
+			consts.SiteCodes[siteCode] = siteCode // 站点代码
+
 			for _, cv := range configs {
-				name := cv["name"]
-				value := cv["value"]
+				name := cv["name"].(string)
+				value := cv["value"].(string)
 				cArr[name] = value
 				if name == "platform" {
 					consts.SitePlatforms[siteCode] = value // 平台识别号
@@ -58,7 +63,7 @@ func LoadPlatformConfigs(db *gorm.DB) {
 				}
 			}
 
-			consts.SiteConfgs[siteCode] = cArr
+			consts.SiteConfigs[siteCode] = cArr
 		}
 	}
 }

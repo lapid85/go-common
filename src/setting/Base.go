@@ -50,9 +50,15 @@ func LoadConfigs(args ...string) {
 	// <- 结束
 	// ---------------------------------------------------------------------
 
+	// APP名称
+	appName := Get("app_name")
+	if appName != "" {
+		consts.AppName = appName //应用程序名称
+	}
 	// 设置运行模式
-	if consts.AppName == "" {
-		consts.AppName = Get("app_name") //应用程序名称
+	runMode := Get("sys.run_mode")
+	if runMode != "" {
+		consts.RunMode = runMode //运行模式
 	}
 	consts.PlatformIntegrated = Get("platform_integrated") //综合平台名称 - 总的平台名称
 	consts.SiteDefault = Get("platform_default")           //设定默认平台 - 默认平台名称
@@ -83,6 +89,7 @@ func LoadConfigs(args ...string) {
 
 	// 加载平台配置信息
 	platDB, err := clients.MySQL(connString)
+	fmt.Println(connString)
 	if err != nil {
 		panic("无法连接到平台数据库: " + err.Error())
 	}
@@ -100,30 +107,34 @@ func LoadConfigs(args ...string) {
 	consts.SiteKafkaStrings = map[string]string{}       // kafka 连接信息
 
 	LoadPlatformConfigs(platDB)
+}
 
+// PrintConfigs 打印配置信息
+func PrintConfigs() {
 	loadedData := map[string]interface{}{
-		"UploadPath":            consts.UploadPath,
-		"UploadURL":             consts.UploadURLPath,
-		"LogPath":               consts.LogPath,
-		"IpDbPath":              consts.IpDbPath,
-		"InternalMemberServUrl": consts.InternalMemberServUrl,
-		"InternalGameServUrl":   consts.InternalGameServUrl,
-		"InternalOssServUrl":    consts.InternalOssServUrl,
-		"InternalAdminServUrl":  consts.InternalAdminServUrl,
-		"AppName":               consts.AppName,
-		"PlatformIntegrated":    consts.PlatformIntegrated,
-		"SiteDefault":           consts.SiteDefault,
-		"InternalIpList":        consts.InternalIpList,
-		"SitePlatforms":         consts.SitePlatforms,
-		"SiteNames":             consts.SiteNames,
-		"SiteCodes":             consts.SiteCodes,
-		"SiteConfigs":           consts.SiteConfigs,
-		"SiteStaticURLs":        consts.SiteStaticURLs,
-		"SiteUploadURLs":        consts.SiteUploadURLs,
-		"SiteMysqlStrings":      consts.SiteMysqlStrings,
-		"SitePgSQLStrings":      consts.SitePgSQLStrings,
-		"SiteRedisStrings":      consts.SiteRedisStrings,
-		"SiteKafkaStrings":      consts.SiteKafkaStrings,
+		"AppName":               consts.AppName,               // 应用程序名称
+		"RunMode":               consts.RunMode,               // 运行模式
+		"UploadPath":            consts.UploadPath,            // 上传保存文件位置
+		"UploadURL":             consts.UploadURLPath,         // 上传文件url前缀
+		"LogPath":               consts.LogPath,               // 日志文件保存位置
+		"IpDbPath":              consts.IpDbPath,              // IP数据库保存路径
+		"InternalMemberServUrl": consts.InternalMemberServUrl, // 内网虚拟域名 - 会员服务
+		"InternalGameServUrl":   consts.InternalGameServUrl,   // 内网虚拟域名 - 游戏服务
+		"InternalOssServUrl":    consts.InternalOssServUrl,    // 内网虚拟域名 - oss服务
+		"InternalAdminServUrl":  consts.InternalAdminServUrl,  // 内网虚拟域名 - 后台服务
+		"PlatformIntegrated":    consts.PlatformIntegrated,    // 综合平台名称 - 总的平台名称
+		"SiteDefault":           consts.SiteDefault,           // 设定默认平台 - 默认平台名称
+		"InternalIpList":        consts.InternalIpList,        // 内网ip列表 - 内网白名单
+		"SitePlatforms":         consts.SitePlatforms,         // 平台识别号
+		"SiteNames":             consts.SiteNames,             // 站点名称
+		"SiteCodes":             consts.SiteCodes,             // 站点代码
+		"SiteConfigs":           consts.SiteConfigs,           // 站点配置信息
+		"SiteStaticURLs":        consts.SiteStaticURLs,        // 静态文件地址
+		"SiteUploadURLs":        consts.SiteUploadURLs,        // 上传路径
+		"SiteMysqlStrings":      consts.SiteMysqlStrings,      // mysql 连接信息
+		"SitePgSQLStrings":      consts.SitePgSQLStrings,      // pgsql 连接信息
+		"SiteRedisStrings":      consts.SiteRedisStrings,      // redis 连接信息
+		"SiteKafkaStrings":      consts.SiteKafkaStrings,      // kafka 连接信息
 	}
 
 	_, _ = pp.Println(loadedData)
