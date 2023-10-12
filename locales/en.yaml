@@ -19,6 +19,7 @@ errUsernameFormatIsWrong: Incorrect username format
 errIPFormatIsWrong: Incorrect IP format
 errRowNotFound: Row not found
 errUserNameFormat: Incorrect username format
+errConfigNotFound: Configuration not found
 # member-api
 errRealNameFormat: Incorrect real name format
 errPasswordFormat: Incorrect password format

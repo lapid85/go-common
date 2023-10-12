@@ -19,6 +19,7 @@ errUsernameFormatIsWrong: 用户名格式错误
 errIPFormatIsWrong: IP格式错误
 errRowNotFound: 记录查找失败
 errUserNameFormat: 用户名格式不正确
+errConfigNotFound: 配置内容不存在
 # member-api
 errRealNameFormat: 真实姓名格式不正确
 errPasswordFormat: 密码格式不正确

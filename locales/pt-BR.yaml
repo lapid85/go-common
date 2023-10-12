@@ -19,6 +19,7 @@ errUsernameFormatIsWrong: Formato de nome de usuário incorreto
 errIPFormatIsWrong: Formato de IP incorreto
 errRowNotFound: Linha não encontrada
 errUserNameFormat: Formato de nome de usuário incorreto
+errConfigNotFound: Configuração não encontrada
 # member-api
 errRealNameFormat: Formato de nome real incorreto
 errPasswordFormat: Formato de senha incorreto
