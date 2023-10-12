@@ -11,20 +11,18 @@ type StoreRedis struct {
 	Code string // 平台名称
 }
 
-// *** 警告 ***
 // Set 设置redis的值
-func (p *StoreRedis) Set(id string, value string) error {
-	siteCode := p.Code
+func (ths *StoreRedis) Set(id string, value string) error {
+	siteCode := ths.Code
 	rdClient := clients.GetRedisBySite(siteCode)
 	ctx := context.Background()
 	_, err := rdClient.Set(ctx, id, value, 300*time.Second).Result()
 	return err
 }
 
-// *** 警告 ***
 // Get 获取redis的值
-func (p *StoreRedis) Get(id string, clear bool) string {
-	siteCode := p.Code
+func (ths *StoreRedis) Get(id string, clear bool) string {
+	siteCode := ths.Code
 	rdClient := clients.GetRedisBySite(siteCode)
 	ctx := context.Background()
 	v, _ := rdClient.Get(ctx, id).Result()
@@ -35,7 +33,7 @@ func (p *StoreRedis) Get(id string, clear bool) string {
 }
 
 // Verify 校验redis的值
-func (p *StoreRedis) Verify(id, answer string, clear bool) bool {
-	v := p.Get(id, clear)
+func (ths *StoreRedis) Verify(id, answer string, clear bool) bool {
+	v := ths.Get(id, clear)
 	return v == answer
 }

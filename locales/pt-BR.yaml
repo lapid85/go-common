@@ -124,3 +124,4 @@ errPasswordIncorrect: Nome de usuário ou senha incorretos
 successOperate: Operação bem-sucedida
 errUserUpdate: Falha ao atualizar informações do usuário
 errGetUserAccount: Falha ao obter informações da conta do usuário
+errGetCaptcha: Falha ao obter código de verificação

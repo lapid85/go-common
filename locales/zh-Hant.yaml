@@ -124,3 +124,4 @@ errPasswordIncorrect: 用戶名稱或者密碼錯誤
 successOperate: 操作成功
 errUserUpdate: 更新用戶信息失敗
 errGetUserAccount: 獲取用戶賬戶信息失敗
+errGetCaptcha: 獲取驗證碼失敗

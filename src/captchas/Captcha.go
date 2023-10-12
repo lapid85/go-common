@@ -21,19 +21,18 @@ var Capt = func(platform string) *Captcha {
 }
 
 // GenerateCaptcha 生成验证码
-func (p *Captcha) GenerateCaptcha() map[string]interface{} {
-	c := base64Captcha.NewCaptcha(p.Driver, p.Store)
+func (ths *Captcha) GenerateCaptcha() (map[string]interface{}, error) {
+	c := base64Captcha.NewCaptcha(ths.Driver, ths.Store)
 	id, b64s, err := c.Generate()
-	body := map[string]interface{}{"code": 1, "data": b64s, "captchaId": id, "msg": "success"}
 	if err != nil {
-		body = map[string]interface{}{"code": 0, "msg": err.Error()}
+		return nil, err
 	}
-	return body
+	body := map[string]interface{}{"captcha": b64s, "captchaId": id}
+	return body, nil
 }
 
 // Verify 校验验证码
-func (p *Captcha) Verify(id, verifyValue string) bool {
-	//true  删除验证码
+func (ths *Captcha) Verify(id, verifyValue string) bool {
 	verifyValue = strings.ToLower(verifyValue)
-	return p.Store.Verify(id, verifyValue, true)
+	return ths.Store.Verify(id, verifyValue, true)
 }

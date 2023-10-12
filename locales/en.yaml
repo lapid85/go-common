@@ -124,3 +124,4 @@ errPasswordIncorrect: Incorrect username or password
 successOperate: Operation successful
 errUserUpdate: Failed to update user information
 errGetUserAccount: Failed to get user account information
+errGetCaptcha: Failed to get captcha
