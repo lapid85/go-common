@@ -125,3 +125,9 @@ successOperate: Operation successful
 errUserUpdate: Failed to update user information
 errGetUserAccount: Failed to get user account information
 errGetCaptcha: Failed to get captcha
+failGameList: Failed to get game list
+# game-api
+
+# admin-api
+
+# platform-api

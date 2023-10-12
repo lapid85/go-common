@@ -125,3 +125,9 @@ successOperate: 操作成功
 errUserUpdate: 更新用户信息失败
 errGetUserAccount: 获取用户账户信息失败
 errGetCaptcha: 获取验证码失败
+failGameList: 获取游戏列表失败
+# game-api
+
+# admin-api
+
+# platform-api
